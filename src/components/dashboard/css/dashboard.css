@@ -1,0 +1,111 @@
+.dashboard {
+    display: flex;
+    padding: 0px;
+}
+
+.dashboard .sidebar {
+    position: absolute;
+    top: 0px;
+    margin-top: 56px;
+    height: 100%;
+    overflow: hidden;
+    width: 220px;
+    background-color: #212529;
+    color: whitesmoke;
+    border-right: 1px solid #212529;
+}
+
+.dashboard .sidebar ul {
+    margin-top: 90px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard .sidebar ul li a {
+    height: 47px;
+    padding: 15px 30px;
+    color: white;
+    background-color: #005aff;
+    display: block;
+    margin: 0px 0px 5px -32px;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Rokkitt', serif;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.dashboard .sidebar ul li a:hover {
+    background-color: #000;
+    color: white
+}
+
+.dashboard .content {
+    margin-left: 220px;
+    width: 100%;
+    height: 650px;
+    overflow-y: scroll;
+    background-color: #f6f6f6;
+}
+
+.dashboard .content .title {
+    margin: 20px 50px;
+    font-size: 18px;
+    font-family: 'Abril Fatface', cursive, 'Times New Roman', Times, serif;
+}
+
+.dashboard .content table {
+    font-family: 'Rokkitt', serif;
+    font-size: 15px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.stats>div {
+    margin-top: 50px;
+}
+
+.stats>div>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+    margin: 20px 10px;
+    border: 1px solid #d3d3d3;
+    box-shadow: 0 2px 16px -11px black;
+    background-color: #fff;
+    font-family: 'Rokkitt', serif;
+}
+
+.stats>div>div:hover {
+    border: 1px solid lightblue;
+}
+
+.stats>div>div h3 {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.buyIcon {
+    font-size: 22px;
+    color: #034730;
+    font-weight: bolder;
+    font-family: 'Rokkitt', serif;
+}
+
+.chat_area {
+    height: 250px;
+    width: 100%;
+    background-color: #fff;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    border: 1px solid lightblue;
+}

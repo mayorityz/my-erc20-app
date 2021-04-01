@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+
+.banner {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 40px;
+    background-color: #f8f8ff;
+}
+
+.banner h3 {
+    font-weight: bold;
+    font-family: 'Abril Fatface', cursive, 'Times New Roman', Times, serif;
+    font-size: 50px;
+    width: 50%;
+    text-align: center;
+}
+
+.banner h6 {}
