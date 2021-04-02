@@ -74,3 +74,15 @@ exports.placeorder = async (req, res) => {
     res.status(400).json({ status: "failure", data: "" });
   }
 };
+
+exports.myOrderConnections = async (req, res) => {
+  const { id } = req.who;
+  try {
+    const fetchData = await sequelize.query(
+      `SELECT rateatpurchase, ethvalue, fiat, orderdate, orderid, status FROM orders WHERE sellerid = ${id}`
+    );
+    res.status(200).json({ status: "success", data: fetchData[0] });
+  } catch (error) {
+    res.status(400).json({ status: "failure", data: "" });
+  }
+};

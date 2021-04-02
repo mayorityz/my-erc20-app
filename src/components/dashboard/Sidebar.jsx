@@ -24,17 +24,17 @@ const SideBar = () => {
         </li>
         <li>
           <Link to={`${url}/sell`}>
-            <ArrowUp size={16} /> Sell{" "}
+            <ArrowUp size={16} /> Sell Crypto
           </Link>
         </li>
         <li>
           <Link to={`${url}/offers`}>
-            <Activity size={16} /> Offers <Bell size={8} />
+            <Activity size={16} /> Buy Crypto <Bell size={8} />
           </Link>
         </li>
         <li>
           <Link to={`${url}/purchase`}>
-            <Activity size={16} /> Transactions <Bell size={8} />
+            <Activity size={16} /> My Order History <Bell size={8} />
           </Link>
         </li>
         <li>

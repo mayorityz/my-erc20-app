@@ -34,4 +34,11 @@ router.post(
   userMiddleware.VerifyToken,
   salesController.placeorder
 );
+
+router.get(
+  "/sales/orderhistory",
+  userMiddleware.VerifyCookie,
+  userMiddleware.VerifyToken,
+  salesController.myOrderConnections
+);
 module.exports = router;

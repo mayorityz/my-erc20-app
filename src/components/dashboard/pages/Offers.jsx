@@ -3,6 +3,7 @@ import axios from "axios";
 import Web3 from "web3";
 import { cleanAddress } from "./../../../utils/cleanAddress";
 import { Link, useRouteMatch } from "react-router-dom";
+import { BookOpen } from "react-feather";
 
 const Offers = () => {
   let { path } = useRouteMatch();
@@ -25,8 +26,11 @@ const Offers = () => {
         {/* justify-content-md-center */}
         <div className="col-md-4"></div>
         <div className="col-md-8">
-          <h5 className="text-center">Available Ether For Sale</h5>
-          <table className="table table-hover table-striped table-sm">
+          <h5 className="text-center">
+            {" "}
+            <BookOpen size={23} /> Sales Ledger.
+          </h5>
+          <table className="table table-hover table-striped table-sm  text-center">
             <thead className="thead-dark">
               <tr>
                 <th scope="col">Username</th>
@@ -48,10 +52,7 @@ const Offers = () => {
                   <td>{sale.rate}</td>
                   <td>{sale.updated}</td>
                   <td>
-                    <Link
-                      to={`/dashboard/sale-details/${sale.salesid}`}
-                      className="btn btn-secondary"
-                    >
+                    <Link to={`/dashboard/sale-details/${sale.salesid}`}>
                       View & Buy
                     </Link>
                   </td>

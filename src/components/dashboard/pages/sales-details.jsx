@@ -102,14 +102,14 @@ const SalesDetails = () => {
                 <label htmlFor="">i want to buy ...</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${
+                    coloring ? "is-valid" : "is-invalid"
+                  }`}
                   value={value}
                   placeholder=""
                   onChange={calcFiat}
-                  style={coloring ? inputStyle.active : inputStyle.error}
                 />
               </div>
-
               <div className="form-group">
                 <label htmlFor="">I want to buy ...</label>
                 <input
