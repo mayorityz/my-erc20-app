@@ -21,9 +21,18 @@ const Buy = () => {
     <>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">Canceled Orders</div>
-          <div className="col-md-4">Ongoing Orders</div>
-          <div className="col-md-4">Completed Orders.</div>
+          <div className="col-md-4 bg-primary" style={style}>
+            <h2>Canceled Orders.</h2>
+            <h3>0</h3>
+          </div>
+          <div className="col-md-4 bg-danger" style={style}>
+            <h2>Ongoing Orders.</h2>
+            <h3>0</h3>
+          </div>
+          <div className="col-md-4 bg-secondary" style={style}>
+            <h2>Completed Orders.</h2>
+            <h3>0</h3>
+          </div>
         </div>
       </div>
       <div className="container container_x">
@@ -87,7 +96,7 @@ const Buy = () => {
             )}
           </div>
           <div className="col-md-6">
-            <h5 className="text-center">Incoming Orders.</h5>
+            <h5 className="text-center">Outgoing Orders.</h5>
             <hr />
             {data.length === 0 ? (
               "not data found"
@@ -150,4 +159,13 @@ const Buy = () => {
   );
 };
 //  justify-content-center
+const style = {
+  height: 150,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+  color: "#fff",
+  fontFamily: "Rokkitt",
+};
 export default Buy;

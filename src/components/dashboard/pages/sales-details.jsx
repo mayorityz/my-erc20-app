@@ -131,13 +131,4 @@ const SalesDetails = () => {
   );
 };
 
-const inputStyle = {
-  active: {
-    borderColor: "blue",
-  },
-  error: {
-    borderColor: "red",
-  },
-};
-
 export default SalesDetails;

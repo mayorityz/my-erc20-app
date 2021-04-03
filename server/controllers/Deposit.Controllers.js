@@ -86,3 +86,17 @@ exports.myOrderConnections = async (req, res) => {
     res.status(400).json({ status: "failure", data: "" });
   }
 };
+
+exports.buyerNegoView = async (req, res) => {
+  const { id } = req.who;
+  const { tradeid } = req.params;
+
+  try {
+    const fetchData = await sequelize.query(
+      `SELECT * FROM orders WHERE buyerid = ${id} AND orderid ='${tradeid}' AND status= 'ongoing'`
+    );
+    res.status(200).json({ status: "success", data: fetchData[0] });
+  } catch (error) {
+    res.status(400).json({ status: "failure", data: [] });
+  }
+};
