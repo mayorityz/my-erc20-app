@@ -9,6 +9,8 @@ const Offers = () => {
   let { path } = useRouteMatch();
 
   const [sales, setSales] = useState({ status: true, data: [] });
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const pull = async () => {
       const apiResponse = await axios.get(
@@ -17,9 +19,11 @@ const Offers = () => {
       );
 
       setSales({ status: false, data: apiResponse.data[0] });
+      setLoading(false);
     };
     pull();
   }, []);
+
   return (
     <div className="container table-responsive container_x">
       <div className="row">
@@ -30,36 +34,42 @@ const Offers = () => {
             {" "}
             <BookOpen size={23} /> Sales Ledger.
           </h5>
-          <table className="table table-hover table-striped table-sm  text-center">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Address</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Min. Purchase</th>
-                <th scope="col">Rate</th>
-                <th scope="col">TimeStamp</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sales.data.map((sale) => (
-                <tr key={sale.address}>
-                  <td>{sale.username}</td>
-                  <td>0x0...{cleanAddress(sale.address)}</td>
-                  <td>{Web3.utils.fromWei(sale.balance)}eth</td>
-                  <td>{Web3.utils.fromWei(sale.minpurchase)}eth</td>
-                  <td>{sale.rate}</td>
-                  <td>{sale.updated}</td>
-                  <td>
-                    <Link to={`/dashboard/sale-details/${sale.salesid}`}>
-                      View & Buy
-                    </Link>
-                  </td>
+          {loading ? (
+            "Fetching Available trades"
+          ) : sales.data.length === 0 ? (
+            "There are no available trades at the moment... Be  the first..."
+          ) : (
+            <table className="table table-hover table-striped table-sm  text-center">
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Min. Purchase</th>
+                  <th scope="col">Rate</th>
+                  <th scope="col">TimeStamp</th>
+                  <th scope="col">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sales.data.map((sale) => (
+                  <tr key={sale.address}>
+                    <td>{sale.username}</td>
+                    <td>0x0...{cleanAddress(sale.address)}</td>
+                    <td>{Web3.utils.fromWei(sale.balance)}eth</td>
+                    <td>{Web3.utils.fromWei(sale.minpurchase)}eth</td>
+                    <td>{sale.rate}</td>
+                    <td>{sale.updated}</td>
+                    <td>
+                      <Link to={`/dashboard/sale-details/${sale.salesid}`}>
+                        View & Buy
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

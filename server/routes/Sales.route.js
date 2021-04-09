@@ -43,10 +43,24 @@ router.get(
 );
 
 router.get(
+  "/sales/myOrder",
+  userMiddleware.VerifyCookie,
+  userMiddleware.VerifyToken,
+  salesController.myOrders
+);
+
+router.get(
   "/sales/seller-negotiation/:tradeid",
   userMiddleware.VerifyCookie,
   userMiddleware.VerifyToken,
   salesController.buyerNegoView
+);
+
+router.get(
+  "/sales/buyer-negotiation/:tradeid",
+  userMiddleware.VerifyCookie,
+  userMiddleware.VerifyToken,
+  salesController.sellerNegoView
 );
 
 module.exports = router;

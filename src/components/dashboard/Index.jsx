@@ -11,6 +11,7 @@ import Buy from "./pages/Buy";
 import Transaction from "./pages/Transaction";
 import SalesDetails from "./pages/sales-details";
 import NegotiationSeller from "./pages/Negotiation";
+import CryptoSeller from "./pages/CryptoSeller";
 
 const Index = () => {
   const auth = useContext(authContext);
@@ -38,7 +39,9 @@ const Index = () => {
           <Route path={`${path}/negotiation-buyer/:id`}>
             <NegotiationSeller />
           </Route>
-
+          <Route path={`${path}/negotiation-seller/:id`}>
+            <CryptoSeller />
+          </Route>
           <Route path={`${path}/history`}>
             <Transaction />
           </Route>

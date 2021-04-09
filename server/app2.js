@@ -1,8 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 
-const { Sequelize } = require("sequelize");
-
 const Port = process.env.PORT || 4444;
 const userRoutes = require("./routes/Users.route");
 const txRoutes = require("./routes/Tx.route");
@@ -25,6 +23,10 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "*");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
+});
+
+app.get("/", (req, res) => {
+  console.log("home");
 });
 
 app.use(userRoutes);
@@ -58,21 +60,13 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-const sequelize = new Sequelize("dex", "postgres", "majormayor", {
-  host: "localhost",
-  dialect: "postgres",
+const server = app.listen(Port, () => {
+  console.log(`connected successfully & running on port:${Port}`);
 });
-
-const connect = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
-    app.listen(Port, () => {
-      console.log(`connected successfully & running on port:${Port}`);
-    });
-  } catch (error) {
-    console.error("Unable to connect to the database:", error.message);
-  }
-};
-
-connect();
+// socket
+var io = require("socket.io")(server, {
+  cors: {
+    origin: `http://localhost:3000`,
+  },
+});
+require("./socket")(io);

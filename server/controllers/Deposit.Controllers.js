@@ -36,7 +36,7 @@ exports.availableSales = async (req, res) => {
   console.log(id);
   try {
     const response = await sequelize.query(
-      `SELECT * FROM sales WHERE "userid" = ${id}`
+      `SELECT * FROM sales WHERE "userid" = ${id} AND balance > 0`
     );
     console.log(response);
     res.status(200).send(response);
@@ -87,6 +87,18 @@ exports.myOrderConnections = async (req, res) => {
   }
 };
 
+exports.myOrders = async (req, res) => {
+  const { id } = req.who;
+  try {
+    const fetchData = await sequelize.query(
+      `SELECT rateatpurchase, ethvalue, fiat, orderdate, orderid, status FROM orders WHERE buyerid = ${id}`
+    );
+    res.status(200).json({ status: "success", data: fetchData[0] });
+  } catch (error) {
+    res.status(400).json({ status: "failure", data: "" });
+  }
+};
+
 exports.buyerNegoView = async (req, res) => {
   const { id } = req.who;
   const { tradeid } = req.params;
@@ -94,6 +106,20 @@ exports.buyerNegoView = async (req, res) => {
   try {
     const fetchData = await sequelize.query(
       `SELECT * FROM orders WHERE buyerid = ${id} AND orderid ='${tradeid}' AND status= 'ongoing'`
+    );
+    res.status(200).json({ status: "success", data: fetchData[0] });
+  } catch (error) {
+    res.status(400).json({ status: "failure", data: [] });
+  }
+};
+
+exports.sellerNegoView = async (req, res) => {
+  const { id } = req.who;
+  const { tradeid } = req.params;
+
+  try {
+    const fetchData = await sequelize.query(
+      `SELECT * FROM orders WHERE sellerid = ${id} AND orderid ='${tradeid}' AND status= 'ongoing'`
     );
     res.status(200).json({ status: "success", data: fetchData[0] });
   } catch (error) {

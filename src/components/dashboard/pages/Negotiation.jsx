@@ -11,7 +11,7 @@ import web3 from "web3";
 
 const NegotiationSeller = () => {
   const { id } = useParams();
-  const [data, setData] = useState({});
+  const [data, setData] = useState({ ethvalue: "0" });
 
   useEffect(() => {
     const url = async () => {
@@ -20,10 +20,12 @@ const NegotiationSeller = () => {
         { withCredentials: true }
       );
       console.log(query.data.data[0]);
+      console.log(typeof query.data.data[0].ethvalue);
       if (query.data.status === "success") setData(query.data.data[0]);
     };
     url();
   }, [id]);
+
   return (
     <div className="container container_x">
       <div className="row">
@@ -31,7 +33,7 @@ const NegotiationSeller = () => {
           <div className="row">
             <div className="col-md-6">
               <label htmlFor="">Locked Ether Value</label>
-              <h4>{web3.utils.fromWei(String(data.ethvalue))}eth</h4>
+              <h4>{web3.utils.fromWei(data.ethvalue)} eth</h4>
             </div>
             <div className="col-md-6">
               <label htmlFor="">Rate</label>
@@ -43,7 +45,7 @@ const NegotiationSeller = () => {
               <h4>{data.status}</h4>
             </div>
             <div className="col-md-6">
-              <label htmlFor="">Fiat Value</label>
+              <label htmlFor="">Expected Sell Value :</label>
               <h4>N{data.fiat}/eth</h4>
             </div>
 

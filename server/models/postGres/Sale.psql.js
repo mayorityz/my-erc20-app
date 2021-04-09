@@ -1,8 +1,13 @@
 const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = new Sequelize("dex", "postgres", "majormayor", {
-  host: "localhost",
-  dialect: "postgres",
-});
+const sequelize = new Sequelize(
+  process.env.POSTGRESDB,
+  process.env.POSTGRESUSER,
+  process.env.POSTGRESPASS,
+  {
+    host: process.env.POSTGRESHOST,
+    dialect: "postgres",
+  }
+);
 
 const Sale = sequelize.define(
   "ForSale",

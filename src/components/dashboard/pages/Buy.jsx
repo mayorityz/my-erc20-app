@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 const Buy = () => {
   const [data, setData] = useState([]);
+  const [requests, setRequests] = useState([]); // handles requests from other users
   useEffect(() => {
     const fetchData = async () => {
       const record = await axios.get(
@@ -17,6 +18,18 @@ const Buy = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const record = await axios.get("http://localhost:4444/sales/myOrder", {
+        withCredentials: true,
+      });
+      if (record.data.status === "success") setRequests(record.data.data);
+      else setRequests([]);
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="container">
@@ -38,9 +51,9 @@ const Buy = () => {
       <div className="container container_x">
         <div className="row">
           <div className="col-md-6">
-            <h5 className="text-center">My Incoming Order History.</h5>
+            <h5 className="text-center">REQUESTS.</h5>
             <hr />
-            {data.length === 0 ? (
+            {requests.length === 0 ? (
               "not data found"
             ) : (
               <table className="table table-borderless table-hover table-striped custom-table align-top text-center">
@@ -55,7 +68,7 @@ const Buy = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((order) => (
+                  {requests.map((order) => (
                     <tr
                       key={order.orderid}
                       className={
@@ -87,7 +100,11 @@ const Buy = () => {
                       <td>{order.orderdate}</td>
                       <td>
                         {" "}
-                        <Link to="">VIEW ORDER.</Link>
+                        <Link
+                          to={`/dashboard/negotiation-seller/${order.orderid}`}
+                        >
+                          VIEW ORDER.
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -96,7 +113,7 @@ const Buy = () => {
             )}
           </div>
           <div className="col-md-6">
-            <h5 className="text-center">Outgoing Orders.</h5>
+            <h5 className="text-center">MY ORDERS.</h5>
             <hr />
             {data.length === 0 ? (
               "not data found"
@@ -145,7 +162,11 @@ const Buy = () => {
                       <td>{order.orderdate}</td>
                       <td>
                         {" "}
-                        <Link to="">VIEW ORDER.</Link>
+                        <Link
+                          to={`/dashboard/negotiation-buyer/${order.orderid}`}
+                        >
+                          VIEW ORDER.
+                        </Link>
                       </td>
                     </tr>
                   ))}
