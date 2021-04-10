@@ -1,3 +1,4 @@
+const id = require("uniqid");
 /**
  * socket handler.
  * @param {*} io client.
@@ -5,17 +6,18 @@
  */
 const socket = (io) => {
   io.on("connection", (client) => {
+    const ROOMID = client.handshake.query.roomid;
+    client.join(ROOMID);
     console.log("New Connection");
 
-    client.on("disconnect", () => {
-      console.log("client disconnected");
+    client.on("disconnect", (reason) => {
+      console.log("client disconnected : ", reason);
     });
 
     // chat area.
-    client.on(`chat message`, (msg) => {
-      console.log(msg);
-    });
-    client.emit("chat message", { data: "say good bye to holiday..." });
+    client.on(ROOMID, (msg) =>
+      io.in(ROOMID).emit(ROOMID, { ...msg, msgid: id() })
+    );
   });
 };
 

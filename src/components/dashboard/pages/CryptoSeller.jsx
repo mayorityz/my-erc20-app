@@ -8,14 +8,19 @@ import { io } from "socket.io-client";
 
 const CryptoSeller = () => {
   const { id } = useParams();
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState({ name: "", txStatus: "seller", message: "" });
+  const [conversation, setConversation] = useState([]);
   const [socket, setSocket] = useState(null);
   const [data, setData] = useState({ ethvalue: "0" });
-  const SERVER = "http://localhost:4444/"; //connection to the socket on the server.
+  const SERVER = `http://localhost:4444/?roomid=${id}`; //connection to the socket on the server.
 
+  // window.scrollTo(0, document.body.scrollHeight);
   useEffect(() => {
     setSocket(io(SERVER));
-  }, []);
+    // socket.on("connect", (socket) => {
+    //   console.log("connected! : ", socket);
+    // });
+  }, [SERVER]);
 
   useEffect(() => {
     const url = async () => {
@@ -30,20 +35,24 @@ const CryptoSeller = () => {
 
   useEffect(() => {
     if (!socket) return;
-
-    // socket.on("connection", () => {
-    //   console.log("connected baby!!!");
-    socket.on("chat message", (msg) => {
-      console.log(msg);
-      socket.emit("chat message", { data: "leys fi" });
+    socket.on(id, (msg) => {
+      const convo = [...conversation];
+      convo.push(msg);
+      setConversation(convo);
     });
-    // });
-    console.log("sol");
-  }, [socket]);
+  }, [socket, id, conversation]);
 
   const converse = (e) => {
     e.preventDefault();
-    socket.of("/").emit(`chat message:${id}`, msg);
+    setMsg({ name: "", txStatus: "seller", message: "" });
+    socket.emit(id, msg);
+  };
+
+  const sellersMessage = ({ target: { value } }) => {
+    let body = { ...msg };
+    body.message = value;
+    body.name = "mayowa";
+    setMsg(body);
   };
 
   return (
@@ -107,19 +116,27 @@ const CryptoSeller = () => {
           <hr />
         </div>
         <div className="col-md-6">
+          <label htmlFor="">
+            <MessageSquare size={15} /> Chat
+          </label>
+          <div className="chat_area">
+            {conversation.length !== 0 &&
+              conversation.map((convo) => (
+                <div key={convo.msgid}>
+                  <span className="chat_box_username">{convo.name} said:</span>
+                  <div className="chat_box_message">{convo.message}</div>
+                </div>
+              ))}
+          </div>
           <form onSubmit={converse}>
-            <label htmlFor="">
-              <MessageSquare size={15} /> Chat
-            </label>
-            <div className="chat_area"></div>
             <textarea
               placeholder="Drop A Message!"
               className="form-control"
               name=""
               rows="4"
               required
-              defaultValue={msg}
-              onChange={({ target }) => setMsg(target.value)}
+              value={msg.message}
+              onChange={sellersMessage}
             ></textarea>
             <hr />
             <button className="btn btn-sm btn-primary">Send Message</button>

@@ -63,10 +63,12 @@ app.use((err, req, res, next) => {
 const server = app.listen(Port, () => {
   console.log(`connected successfully & running on port:${Port}`);
 });
+
 // socket
 var io = require("socket.io")(server, {
   cors: {
     origin: `http://localhost:3000`,
   },
 });
+
 require("./socket")(io);
