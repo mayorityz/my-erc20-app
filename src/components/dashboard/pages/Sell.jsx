@@ -3,12 +3,14 @@ import Web3 from "web3";
 import exchangeABI from "./../../../eth/build/contracts/Exchange.json";
 import image from "./../../../img/coins.svg";
 import axios from "axios";
+import { Archive } from "react-feather";
+import Network from "../../Network";
 
 const Sell = () => {
   let web3 = window.ethereum;
   web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
   const ABI = exchangeABI.abi;
-  const contractAddress = "0x756e5e118DFd1D7D3aC951E52339820F7591B30D";
+  const contractAddress = process.env.REACT_APP_EX_CONTRACT;
   const [address, setAddress] = useState("");
   const [details, setDetails] = useState({ balance: "", forSale: "" });
 
@@ -40,7 +42,7 @@ const Sell = () => {
       .then(async (tx) => {
         console.log(tx);
         const saveRecord = await axios.post(
-          "http://localhost:4444/sales/newsalesdeposit",
+          `${process.env.REACT_APP_URL}/sales/newsalesdeposit`,
           {
             forSale: ether,
             minPurchase: web3.utils.toWei(minPurchase),
@@ -82,15 +84,35 @@ const Sell = () => {
   return (
     <>
       <div className="container container_x">
+        <Network />
         <div className="row">
           <div className="col-md-6">
             <img src={image} alt="side desc" style={{ width: "100%" }} />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6  bg-white p-4">
+            <div className="alert alert-success text-center">
+              Connected Address : {address}
+            </div>
             <div className="alert alert-secondary text-center">
               You Currently Have {web3.utils.fromWei(details.forSale)} eth For
               Sale
-            </div>
+            </div>{" "}
+            <hr />
+            <h6>
+              <Archive size={13} /> Sell From Deposit Ether.{" "}
+              <span className="float-end">
+                {address ? (
+                  "MetaMask Connected"
+                ) : (
+                  <button
+                    className="btn btn-link"
+                    onClick={() => window.ethereum.enable()}
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              </span>
+            </h6>
             <form action="" onSubmit={putUpForSale}>
               <div className="form-group row">
                 <div className="col-md-6">

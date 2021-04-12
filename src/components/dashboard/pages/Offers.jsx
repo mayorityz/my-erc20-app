@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { cleanAddress } from "./../../../utils/cleanAddress";
 import { Link, useRouteMatch } from "react-router-dom";
 import { BookOpen } from "react-feather";
+import Network from "./../../Network";
 
 const Offers = () => {
   let { path } = useRouteMatch();
@@ -14,7 +15,7 @@ const Offers = () => {
   useEffect(() => {
     const pull = async () => {
       const apiResponse = await axios.get(
-        "http://localhost:4444/sales/get-available-sales",
+        `${process.env.REACT_APP_URL}/sales/get-available-sales`,
         { withCredentials: true }
       );
 
@@ -26,6 +27,7 @@ const Offers = () => {
 
   return (
     <div className="container table-responsive container_x">
+      <Network />
       <div className="row">
         {/* justify-content-md-center */}
         <div className="col-md-4"></div>
@@ -37,7 +39,9 @@ const Offers = () => {
           {loading ? (
             "Fetching Available trades"
           ) : sales.data.length === 0 ? (
-            "There are no available trades at the moment... Be  the first..."
+            <h4 className="text-center">
+              "There are no available trades at the moment... Be the first..."
+            </h4>
           ) : (
             <table className="table table-hover table-striped table-sm  text-center">
               <thead className="thead-dark">

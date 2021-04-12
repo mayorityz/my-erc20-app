@@ -1,0 +1,14 @@
+.spaced_section {
+    padding: 50px 0px;
+    font-family: 'Rokkitt', serif;
+}
+
+.section_darker {
+    background-color: #f7f7f7;
+    padding: 50px 20px;
+}
+
+.section_darker h6,
+.section_darker p {
+    text-align: center;
+}

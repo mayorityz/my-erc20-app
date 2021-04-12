@@ -4,13 +4,16 @@ import image from "./../../../img/wallet.svg";
 import exchangeABI from "./../../../eth/build/contracts/Exchange.json";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Save, Archive, Info } from "react-feather";
+import Network from "../../Network";
 
 const Deposit = () => {
   const ABI = exchangeABI.abi;
-  const contractAddress = "0x756e5e118DFd1D7D3aC951E52339820F7591B30D";
+  const contractAddress = process.env.REACT_APP_EX_CONTRACT;
   const [deposit, setDeposit] = useState("0");
   const [details, setDetails] = useState({ balance: "", forSale: "" });
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(window.ethereum.selectedAddress);
+  const [alert, setAlert] = useState("");
 
   //   change account...
   const checkAccountChange = window.ethereum.on("accountsChanged", (res) =>
@@ -29,6 +32,12 @@ const Deposit = () => {
     e.preventDefault();
     let exchangeContract = new web3.eth.Contract(ABI, contractAddress);
     let ether = web3.utils.toWei(deposit);
+    setAlert("Initiating Deposit. Please Wait!");
+
+    if (ether <= 0) {
+      setAlert("Invalid Deposit Value!");
+      return;
+    }
 
     await exchangeContract.methods
       .deposit(ether)
@@ -37,21 +46,24 @@ const Deposit = () => {
         // sent the tx to backend for sorting
         axios
           .post(
-            "http://localhost:4444/transactions/save-new-tx",
+            `${process.env.REACT_APP_URL}/transactions/save-new-tx`,
             { ...tx, value: ether },
             { withCredentials: true }
           )
           .then((res) => {
             console.log(res.data);
+            setAlert("Deposit Made Successfully!");
           })
           .catch((er) => {
             console.log(er);
+            setAlert(er.message);
           });
       })
       .catch((err) => {
         console.log(err);
         console.log(err.reason);
         console.log(err.message);
+        setAlert(err.message);
       });
   };
 
@@ -78,6 +90,7 @@ const Deposit = () => {
   return (
     <>
       <div className="container container_x">
+        <Network />
         <div className="row">
           <div className="col-md-6">
             <img
@@ -86,16 +99,33 @@ const Deposit = () => {
               style={{ width: "100%", height: "100%" }}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col-md-6 bg-white p-4">
+            <h6>
+              <Archive size={13} /> Deposit Eth To Contract.{" "}
+              <span className="float-end">
+                {address ? (
+                  "MetaMask Connected"
+                ) : (
+                  <button
+                    className="btn btn-link"
+                    onClick={() => window.ethereum.enable()}
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              </span>
+            </h6>
+
             <div className="alert alert-success">
               <p>
-                To begin to trade your ethereum, you need to send the value to
-                our smart contract. Your ethereum is saved on the blockchain,
-                thereby making the transaction transparent.
+                <Info size={16} /> To begin to trade your ether, you need to
+                send the value to our smart contract. Your ether is saved on the
+                blockchain, thereby making all transactions transparent.
               </p>
+              <p>Connected Metamask Wallet Address: {address}</p>
             </div>
 
-            <div className="alert alert-secondary">
+            <div className="alert alert-secondary text-center">
               You Currently Have {web3.utils.fromWei(details.balance)}eth
               Deposited In Your Wallet.
             </div>
@@ -122,8 +152,19 @@ const Deposit = () => {
                 </div>
               </div>
               <hr />
-              <button className="btn btn-primary btn-xs">Deposit.</button>
-              <Link to="#" className="float-end">
+              {alert && (
+                <>
+                  <div className="alert alert-secondary text-center">
+                    {alert}
+                  </div>
+                  <hr />
+                </>
+              )}
+              <button className="btn btn-primary btn-xs">
+                {" "}
+                <Save size={12} /> Deposit.
+              </button>
+              <Link to="/dashboard/sell" className="float-end">
                 Got Eth? Put it up for sale
               </Link>
             </form>

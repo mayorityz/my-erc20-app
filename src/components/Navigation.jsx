@@ -3,11 +3,12 @@ import Web3 from "web3";
 import "./css/Navigation.css";
 import metalogo from "../img/metamask.svg";
 import { cleanAddress } from "./../utils/cleanAddress";
-import { Link, Switch, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Menu } from "react-feather";
 
 const Navigation = () => {
   const [address, setAddress] = useState("");
-
+  const [hide, setHide] = useState(true);
   let web3 = window.ethereum;
   web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
 
@@ -22,38 +23,57 @@ const Navigation = () => {
     setAddress(checkAccountChange.selectedAddress);
   }, [address, checkAccountChange]);
 
-  return (
-    <nav class="navbar navbar-dark bg-dark navigation">
-      <a class="navbar-brand" href="0#">
-        Logo here!{" "}
-        <span className="nav_address">0x...{cleanAddress(address)}</span>
-      </a>
+  const toggleMobileSideBar = () => setHide(!hide);
 
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <Link class="nav-link" to="/#">
-            <img src={metalogo} className="metalogo" alt="logo" />{" "}
-            {address === "Connect MetaMask" ? (
-              <span>{address}</span>
-            ) : (
-              <span className="nav_address">
-                Connected as : 0x0...{cleanAddress(address)}
-              </span>
-            )}
-          </Link>
-        </li>
-        <li class="nav-item">
-          <Link class="nav-link" to="/login">
-            My Account
-          </Link>
-        </li>
-        <li class="nav-item">
-          <Link class="nav-link" to="/dashboard">
-            Dashboard
-          </Link>
-        </li>
-      </ul>
-    </nav>
+  return (
+    <>
+      <nav class="navbar navbar-dark bg-dark navigation">
+        <Link class="navbar-brand" href="0#">
+          Logo here!{" "}
+          <span className="float-end">
+            <Menu onClick={toggleMobileSideBar} />
+          </span>
+        </Link>
+
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <Link class="nav-link" to="/#">
+              <img src={metalogo} className="metalogo" alt="logo" />{" "}
+              {address === "Connect MetaMask" ? (
+                <span>{address}</span>
+              ) : (
+                <span className="nav_address">
+                  Connected as : 0x0...{cleanAddress(address)}
+                </span>
+              )}
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link class="nav-link" to="/login">
+              My Account
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link class="nav-link" to="/dashboard">
+              Dashboard
+            </Link>
+          </li>
+        </ul>
+      </nav>
+      <div className="mobileSideBar">
+        <h3>Close</h3>
+        <ul>
+          <li>a</li>
+          <li>b</li>
+          <li>c</li>
+          <li>d</li>
+          <li>e</li>
+          <li>f</li>
+          <li>g</li>
+          <li>h</li>
+        </ul>
+      </div>
+    </>
   );
 };
 

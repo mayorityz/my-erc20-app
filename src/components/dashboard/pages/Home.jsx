@@ -3,7 +3,7 @@ import React from "react";
 const Home = () => {
   return (
     <>
-      <h2 className="title">Welcome Back, Oreofeoluwa!</h2>
+      <h2 className="title">Welcome Back!!!</h2>
       <div className="stats">
         <div>
           <div>
@@ -11,8 +11,8 @@ const Home = () => {
             <h6>0X...1797EE</h6>
           </div>
           <div>
-            <h3>MetaMask Wallet Balance:</h3>
-            <h6>1.38044454545</h6>
+            <h3>Incoming Requests:</h3>
+            <h6>10.</h6>
           </div>
         </div>
         <div>

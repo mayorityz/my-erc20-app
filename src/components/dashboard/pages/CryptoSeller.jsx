@@ -12,7 +12,7 @@ const CryptoSeller = () => {
   const [conversation, setConversation] = useState([]);
   const [socket, setSocket] = useState(null);
   const [data, setData] = useState({ ethvalue: "0" });
-  const SERVER = `http://localhost:4444/?roomid=${id}`; //connection to the socket on the server.
+  const SERVER = `${process.env.REACT_APP_URL}/?roomid=${id}`; //connection to the socket on the server.
 
   // window.scrollTo(0, document.body.scrollHeight);
   useEffect(() => {

@@ -150,10 +150,10 @@ const Exchange = () => {
       </Switch>
 
       {/* exchange demo */}
-      <div style={{ width: "20%" }}>
-        <hr />
-        <h3>Buy From!</h3>
-        <form action="" onSubmit={buyEth}>
+      {/* <div style={{ width: "20%" }}> */}
+      {/* <hr /> */}
+      {/* <h3>Buy From!</h3> */}
+      {/* <form action="" onSubmit={buyEth}>
           <input
             type="text"
             className="form-control"
@@ -171,14 +171,15 @@ const Exchange = () => {
           />
           <br />
           <button className="btn btn-warning btn-xs">Buy Eth!</button>
-        </form>
-      </div>
+        </form> */}
+      {/* </div> */}
 
-      <button className="btn btn-success btn-xs" onClick={releaseValue}>
+      {/* <button className="btn btn-success btn-xs" onClick={releaseValue}>
         release ether
-      </button>
+      </button> */}
 
       <Footer />
+      {/* <Circle /> */}
     </>
   );
 };

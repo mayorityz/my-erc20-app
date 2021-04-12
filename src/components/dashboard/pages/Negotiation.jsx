@@ -1,10 +1,6 @@
 // sellers view
 import React, { useState, useEffect } from "react";
-import {
-  MessageSquare,
-  ArrowRightCircle,
-  ArrowDownCircle,
-} from "react-feather";
+import { MessageSquare } from "react-feather";
 import { useParams } from "react-router";
 import axios from "axios";
 import web3 from "web3";
@@ -16,7 +12,7 @@ const NegotiationSeller = () => {
   useEffect(() => {
     const url = async () => {
       let query = await axios.get(
-        `http://localhost:4444/sales/seller-negotiation/${id}`,
+        `${process.env.REACT_APP_URL}/sales/seller-negotiation/${id}`,
         { withCredentials: true }
       );
       console.log(query.data.data[0]);

@@ -38,7 +38,7 @@ const SalesDetails = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     const order = await axios.post(
-      "http://localhost:4444/sales/placeorder",
+      `${process.env.REACT_APP_URL}/sales/placeorder`,
       {
         value: Web3.utils.toWei(value),
         salesid: id,

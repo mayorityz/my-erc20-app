@@ -50,129 +50,139 @@ const Buy = () => {
       </div>
       <div className="container container_x">
         <div className="row">
-          <div className="col-md-6">
-            <h5 className="text-center">REQUESTS.</h5>
-            <hr />
-            {requests.length === 0 ? (
-              "not data found"
-            ) : (
-              <table className="table table-borderless table-hover table-striped custom-table align-top text-center">
-                <thead className="table-dark">
-                  <tr>
-                    <th scope="col">Status</th>
-                    <th scope="col">Expected Amount(N)</th>
-                    <th scope="col2">Eth Value</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Order Date</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {requests.map((order) => (
-                    <tr
-                      key={order.orderid}
-                      className={
-                        order.status === "completed"
-                          ? "table-success"
-                          : "table-secondary"
-                      }
-                    >
-                      <td>
-                        {order.status === "ongoing" && (
-                          <span>
-                            <ArrowDownRight
-                              size={26}
-                              style={{ color: "#1861e0" }}
-                            />
-                          </span>
-                        )}
-                        {order.status === "completed" && (
-                          <CheckCircle size={26} style={{ color: "#3aa23a" }} />
-                        )}
-                        {order.status === "canceled" && (
-                          <XOctagon size={26} style={{ color: "#ff003d" }} />
-                        )}{" "}
-                        {order.status}
-                      </td>
-                      <td>{order.fiat}</td>
-                      <td>{web3.utils.fromWei(order.ethvalue)}</td>
-                      <td>{order.rateatpurchase}</td>
-                      <td>{order.orderdate}</td>
-                      <td>
-                        {" "}
-                        <Link
-                          to={`/dashboard/negotiation-seller/${order.orderid}`}
-                        >
-                          VIEW ORDER.
-                        </Link>
-                      </td>
+          <div className="col-md-6   bg-white p-4">
+            <div className="table-responsive">
+              <h5 className="text-center">REQUESTS.</h5>
+              <hr />
+              {requests.length === 0 ? (
+                "not data found"
+              ) : (
+                <table className="table table-borderless table-hover table-striped custom-table align-top text-center">
+                  <thead className="table-dark">
+                    <tr>
+                      <th scope="col">Status</th>
+                      <th scope="col">Expected Amount(N)</th>
+                      <th scope="col2">Eth Value</th>
+                      <th scope="col">Rate</th>
+                      <th scope="col">Order Date</th>
+                      <th scope="col"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody>
+                    {requests.map((order) => (
+                      <tr
+                        key={order.orderid}
+                        className={
+                          order.status === "completed"
+                            ? "table-success"
+                            : "table-secondary"
+                        }
+                      >
+                        <td>
+                          {order.status === "ongoing" && (
+                            <span>
+                              <ArrowDownRight
+                                size={26}
+                                style={{ color: "#1861e0" }}
+                              />
+                            </span>
+                          )}
+                          {order.status === "completed" && (
+                            <CheckCircle
+                              size={26}
+                              style={{ color: "#3aa23a" }}
+                            />
+                          )}
+                          {order.status === "canceled" && (
+                            <XOctagon size={26} style={{ color: "#ff003d" }} />
+                          )}{" "}
+                          {order.status}
+                        </td>
+                        <td>{order.fiat}</td>
+                        <td>{web3.utils.fromWei(order.ethvalue)}</td>
+                        <td>{order.rateatpurchase}</td>
+                        <td>{order.orderdate}</td>
+                        <td>
+                          {" "}
+                          <Link
+                            to={`/dashboard/negotiation-seller/${order.orderid}`}
+                          >
+                            VIEW ORDER.
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
-          <div className="col-md-6">
-            <h5 className="text-center">MY ORDERS.</h5>
-            <hr />
-            {data.length === 0 ? (
-              "not data found"
-            ) : (
-              <table className="table table-borderless table-hover table-striped custom-table align-vertical text-center">
-                <thead className="table-dark">
-                  <tr>
-                    <th scope="col">Status</th>
-                    <th scope="col">Expected Amount(N)</th>
-                    <th scope="col2">Eth Value</th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Order Date</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((order) => (
-                    <tr
-                      key={order.orderid}
-                      className={
-                        order.status === "completed"
-                          ? "table-success"
-                          : "table-secondary"
-                      }
-                    >
-                      <td>
-                        {order.status === "ongoing" && (
-                          <span>
-                            <ArrowDownRight
-                              size={26}
-                              style={{ color: "#1861e0" }}
-                            />
-                          </span>
-                        )}
-                        {order.status === "completed" && (
-                          <CheckCircle size={26} style={{ color: "#3aa23a" }} />
-                        )}
-                        {order.status === "canceled" && (
-                          <XOctagon size={26} style={{ color: "#ff003d" }} />
-                        )}{" "}
-                        {order.status}
-                      </td>
-                      <td className="align-vertical">{order.fiat}</td>
-                      <td>{web3.utils.fromWei(order.ethvalue)}</td>
-                      <td>{order.rateatpurchase}</td>
-                      <td>{order.orderdate}</td>
-                      <td>
-                        {" "}
-                        <Link
-                          to={`/dashboard/negotiation-buyer/${order.orderid}`}
-                        >
-                          VIEW ORDER.
-                        </Link>
-                      </td>
+          <div className="col-md-6  bg-white p-4">
+            <div className="table-responsive">
+              <h5 className="text-center">MY ORDERS.</h5>
+              <hr />
+              {data.length === 0 ? (
+                "not data found"
+              ) : (
+                <table className="table table-borderless table-hover table-striped custom-table align-vertical text-center">
+                  <thead className="table-dark">
+                    <tr>
+                      <th scope="col">Status</th>
+                      <th scope="col">Expected Amount(N)</th>
+                      <th scope="col2">Eth Value</th>
+                      <th scope="col">Rate</th>
+                      <th scope="col">Order Date</th>
+                      <th scope="col"></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+                  </thead>
+                  <tbody>
+                    {data.map((order) => (
+                      <tr
+                        key={order.orderid}
+                        className={
+                          order.status === "completed"
+                            ? "table-success"
+                            : "table-secondary"
+                        }
+                      >
+                        <td>
+                          {order.status === "ongoing" && (
+                            <span>
+                              <ArrowDownRight
+                                size={26}
+                                style={{ color: "#1861e0" }}
+                              />
+                            </span>
+                          )}
+                          {order.status === "completed" && (
+                            <CheckCircle
+                              size={26}
+                              style={{ color: "#3aa23a" }}
+                            />
+                          )}
+                          {order.status === "canceled" && (
+                            <XOctagon size={26} style={{ color: "#ff003d" }} />
+                          )}{" "}
+                          {order.status}
+                        </td>
+                        <td className="align-vertical">{order.fiat}</td>
+                        <td>{web3.utils.fromWei(order.ethvalue)}</td>
+                        <td>{order.rateatpurchase}</td>
+                        <td>{order.orderdate}</td>
+                        <td>
+                          {" "}
+                          <Link
+                            to={`/dashboard/negotiation-buyer/${order.orderid}`}
+                          >
+                            VIEW ORDER.
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       </div>

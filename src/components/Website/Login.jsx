@@ -13,41 +13,37 @@ const Login = () => {
   const submit = (e) => {
     e.preventDefault();
     setAlert("Logging you in! Please, wait!!");
-    axios
-      .post(
-        "http://localhost:4444/userlogin",
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        // save to local storage
-        const {
-          data: { success, msg },
-        } = res;
-        if (!success) setAlert(msg);
-        else {
-          setAlert("Login Successful!");
-          history.push("/");
-        }
-      })
-      .catch((er) => {
-        console.log(er);
-      });
-  };
-
-  const check = async (e) => {
-    e.preventDefault();
-    axios
-      .get("http://localhost:4444/cook", { withCredentials: true })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((er) => {
-        console.log(er);
-      });
+    if (username === "" || password === "") {
+      setAlert("All Inputs Are Required!!!");
+      return;
+    }
+    try {
+      axios
+        .post(
+          "http://localhost:4444/userlogin",
+          {
+            username,
+            password,
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          // save to local storage
+          const {
+            data: { success, msg },
+          } = res;
+          if (!success) setAlert(msg);
+          else {
+            setAlert("Login Successful!");
+            history.push("/dashboard");
+          }
+        })
+        .catch((er) => {
+          setAlert("Invalid Credentials");
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -56,7 +52,7 @@ const Login = () => {
         <div className="col-md-6">
           <img
             src={loginImg}
-            alt=""
+            alt="login logo"
             style={{ width: "100%", height: "100%" }}
           />
         </div>
@@ -91,9 +87,6 @@ const Login = () => {
               <Link to="/register" className="btn btn-link float-end">
                 Don't Have An Account?
               </Link>
-              <button className="btn btn-success btn-xs" onClick={check}>
-                check token
-              </button>
               {alert && (
                 <>
                   <hr />
