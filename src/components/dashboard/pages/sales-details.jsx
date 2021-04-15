@@ -16,7 +16,7 @@ const SalesDetails = () => {
     const getDetails = async () => {
       // fetch records from the db for the sales details by the id.
       const fetch = await axios.get(
-        `http://localhost:4444/sales/details/${id}`,
+        `${process.env.REACT_APP_URL}/sales/details/${id}`,
         {
           withCredentials: true,
         }
@@ -28,11 +28,14 @@ const SalesDetails = () => {
 
   const calcFiat = async ({ target: { value } }) => {
     setValue(value);
-    if (value < Web3.utils.fromWei(data.data[0].minpurchase))
+    if (
+      value < Web3.utils.fromWei(data.data.minPurchase.toString()) ||
+      value > Web3.utils.fromWei(data.data.upSale.toString())
+    )
       setColoring(false);
     else setColoring(true);
 
-    setFiat(value * data.data[0].rate);
+    setFiat(value * data.data.fiat);
   };
 
   const submitForm = async (e) => {
@@ -43,8 +46,7 @@ const SalesDetails = () => {
         value: Web3.utils.toWei(value),
         salesid: id,
         fiat,
-        sellerid: data.data[0].userid,
-        rates: data.data[0].rate,
+        rates: data.data.fiat,
       },
       { withCredentials: true }
     );
@@ -60,14 +62,14 @@ const SalesDetails = () => {
               <div className="col-md-4">
                 <label>Seller : </label>
               </div>
-              <div className="col-md-8">{data.data[0].username}</div>
+              {/* <div className="col-md-8">{data.data[0].username}</div> */}
             </div>
             <div className="form-group row">
               <div className="col-md-4">
                 <label>For Sale : </label>
               </div>
               <div className="col-md-8">
-                {Web3.utils.fromWei(data.data[0].balance)}eth.
+                {Web3.utils.fromWei(data.data.upSale.toString())}eth.
               </div>
             </div>
             <div className="form-group row">
@@ -75,26 +77,26 @@ const SalesDetails = () => {
                 <label>Min Purchase : </label>
               </div>
               <div className="col-md-8">
-                {Web3.utils.fromWei(data.data[0].minpurchase)}eth.
+                {Web3.utils.fromWei(data.data.minPurchase.toString())}eth.
               </div>
             </div>
             <div className="form-group row">
               <div className="col-md-4">
                 <label>Rate : </label>
               </div>
-              <div className="col-md-8">N{data.data[0].rate}</div>
+              <div className="col-md-8">N{data.data.fiat}</div>
             </div>
             <div className="form-group row">
               <div className="col-md-4">
                 <label>User Address: </label>
               </div>
-              <div className="col-md-8">{data.data[0].address}</div>
+              {/* <div className="col-md-8">{data.data[0].address}</div> */}
             </div>
             <div className="form-group row">
               <div className="col-md-4">
                 <label>Upload Date : </label>
               </div>
-              <div className="col-md-8">{data.data[0].updated}</div>
+              {/* <div className="col-md-8">{data.data[0].updated}</div> */}
             </div>
             <hr />
             <form action="" onSubmit={submitForm}>

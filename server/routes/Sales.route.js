@@ -21,6 +21,14 @@ router.get(
   salesController.availableSales
 );
 
+// mongoVersion
+router.get(
+  "/sales/fetchAvailableSales",
+  userMiddleware.VerifyCookie,
+  userMiddleware.VerifyToken,
+  salesController.fetchAvailableSales
+);
+
 router.get(
   "/sales/details/:salesid",
   userMiddleware.VerifyCookie,

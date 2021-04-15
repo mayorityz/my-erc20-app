@@ -6,6 +6,7 @@ const path = require("path");
 const Port = process.env.PORT || 4444;
 const userRoutes = require("./routes/Users.route");
 const txRoutes = require("./routes/Tx.route");
+const salesRoutes = require("./routes/Sales.route");
 const cookieParser = require("cookie-parser");
 
 const verifyUserToken = require("./middlewares/Users.Middleware");
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 
 app.use(userRoutes);
 app.use(txRoutes);
+app.use(salesRoutes);
 
 app.get("/tes", (req, res) => {
   console.log(req.cookies);

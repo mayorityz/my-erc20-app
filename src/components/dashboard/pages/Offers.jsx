@@ -11,15 +11,19 @@ const Offers = () => {
 
   const [sales, setSales] = useState({ status: true, data: [] });
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const pull = async () => {
       const apiResponse = await axios.get(
-        `${process.env.REACT_APP_URL}/sales/get-available-sales`,
+        `${process.env.REACT_APP_URL}/sales/fetchAvailableSales`,
         { withCredentials: true }
       );
 
-      setSales({ status: false, data: apiResponse.data[0] });
+      console.log(apiResponse);
+      if (apiResponse.data.status === "success")
+        setSales({ status: false, data: apiResponse.data.response });
+      else setErrorMsg(apiResponse.data.response);
       setLoading(false);
     };
     pull();
@@ -57,15 +61,18 @@ const Offers = () => {
               </thead>
               <tbody>
                 {sales.data.map((sale) => (
-                  <tr key={sale.address}>
+                  <tr key={sale._id}>
                     <td>{sale.username}</td>
-                    <td>0x0...{cleanAddress(sale.address)}</td>
-                    <td>{Web3.utils.fromWei(sale.balance)}eth</td>
-                    <td>{Web3.utils.fromWei(sale.minpurchase)}eth</td>
-                    <td>{sale.rate}</td>
-                    <td>{sale.updated}</td>
+                    <td></td>
+                    <td>{Web3.utils.fromWei(sale.upSale.toString())}eth</td>
                     <td>
-                      <Link to={`/dashboard/sale-details/${sale.salesid}`}>
+                      {Web3.utils.fromWei(sale.minPurchase.toString())}
+                      eth
+                    </td>
+                    <td>{sale.fiat}</td>
+                    <td>{}</td>
+                    <td>
+                      <Link to={`/dashboard/sale-details/${sale._id}`}>
                         View & Buy
                       </Link>
                     </td>
