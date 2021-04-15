@@ -1,10 +1,30 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
+import IsEthereum from "./IsEthereum";
 
-const ProtectedRoute = ({ children: Component }) => {
-  let AUTH = true;
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+  let AUTH = true; //use cookie...
   // check that the token is active.
-  return AUTH ? Component : <Redirect to={{ pathname: "/login" }} />;
+  // check for web3 ...
+  const [isEthereumEnabled, setAvailabilty] = useState(false);
+
+  useEffect(() => {
+    let isEth = window.ethereum;
+    if (isEth) setAvailabilty(true);
+  }, []);
+  return (
+    <Route
+      {...rest}
+      render={(props) => {
+        if (AUTH) {
+          if (isEthereumEnabled) return <Component {...props} />;
+          else return <IsEthereum />;
+        } else {
+          return <Redirect to={{ pathname: "/login" }} />;
+        }
+      }}
+    />
+  );
 };
 
 export default ProtectedRoute;

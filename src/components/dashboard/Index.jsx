@@ -12,6 +12,7 @@ import Transaction from "./pages/Transaction";
 import SalesDetails from "./pages/sales-details";
 import NegotiationSeller from "./pages/Negotiation";
 import CryptoSeller from "./pages/CryptoSeller";
+import ProtectedRoute from "../ProtectedRoute";
 
 const Index = () => {
   const auth = useContext(authContext);
@@ -24,9 +25,7 @@ const Index = () => {
       <SideBar />
       <div className="content">
         <Switch>
-          <Route path={`${path}/deposit`}>
-            <Deposit />
-          </Route>
+          <ProtectedRoute path={`${path}/deposit`} component={Deposit} />
           <Route path={`${path}/sell`}>
             <Sell />
           </Route>
@@ -51,10 +50,7 @@ const Index = () => {
           <Route path={`${path}/settings`}>
             <h4>My Settings</h4>
           </Route>
-
-          <Route path={`${path}`}>
-            <Home />
-          </Route>
+          <ProtectedRoute path={`${path}`} component={Home} />
         </Switch>
       </div>
     </div>

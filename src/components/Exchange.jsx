@@ -13,119 +13,22 @@ import Index from "./dashboard/Index";
 import ProtectedRoute from "./ProtectedRoute";
 
 const Exchange = () => {
-  const ABI = exchangeABI.abi;
-  const contractAddress = "0x29412FCD1d55D195c38ecf379c936Ff40c76bD16";
-
-  const [address, setAddress] = useState("");
-  const [deposit, setDeposit] = useState("");
-  const [forSale, setSale] = useState("");
-
-  const [purchaseAdd, setPurchase] = useState("");
-  const [purchaseValue, setPurchaseValue] = useState("");
-
   let web3 = window.ethereum;
-  web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
 
-  //   change account...
-  const checkAccountChange = window.ethereum.on("accountsChanged", (res) =>
-    setAddress(res[0])
-  );
-
-  //   connect metamask
-  const connectMetaMask = async () => {
-    let accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
+  if (window.ethereum) {
+    const checkAccountChange = window.ethereum.on("accountsChanged", (res) => {
+      return res;
     });
-    return accounts[0];
-  };
-
-  useEffect(() => {
-    setAddress(checkAccountChange.selectedAddress);
-  }, [checkAccountChange]);
-
-  //   deposits ether to the conttract for sale.
-  const submitDeposit = async (e) => {
-    e.preventDefault();
-    let exchangeContract = new web3.eth.Contract(ABI, contractAddress);
-    let ether = web3.utils.toWei(deposit);
-
-    await exchangeContract.methods
-      .deposit(ether)
-      .send({ value: ether, from: address })
-      .then((tx) => {
-        console.log(tx);
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log(err.reason);
-        console.log(err.message);
-      });
-  };
-
-  const putUpForSale = async (e) => {
-    e.preventDefault();
-    let exchangeContract = new web3.eth.Contract(ABI, contractAddress);
-    let ether = web3.utils.toWei(forSale);
-    console.log(forSale);
-    console.log(ether);
-
-    await exchangeContract.methods
-      .forSale(ether)
-      .send({ from: address, value: 0 })
-      .then((tx) => {
-        console.log(tx);
-        // exchangeContract.event.Sale("sale", (err, res) => {
-        //   console.log(err);
-        //   console.log(res);
-        // });
-      })
-      .catch((er) => {
-        console.log(er);
-        console.log(er.reason);
-        console.log(er.message);
-      });
-  };
-
-  const buyEth = async (e) => {
-    e.preventDefault();
-    // !check isAddress with web3js
-
-    let exchangeContract = new web3.eth.Contract(ABI, contractAddress);
-    let ether = web3.utils.toWei(purchaseValue);
-
-    await exchangeContract.methods
-      .buy(purchaseAdd)
-      .send({ from: address, value: ether })
-      .then((tx) => {
-        console.log(tx);
-      })
-      .catch((er) => {
-        console.log(er);
-        console.log(er.reason);
-        console.log(er.message);
-      });
-  };
-
-  const releaseValue = async (e) => {
-    let exchangeContract = new web3.eth.Contract(ABI, contractAddress);
-    await exchangeContract.methods
-      .release("0x4960f29901439cBC368d6080E2C63865511cEeed")
-      .send({ from: address, value: 0 })
-      .then((tx) => {
-        console.log(tx);
-      })
-      .catch((er) => {
-        console.log(er);
-      });
-  };
+  }
 
   return (
     <>
       <Navigation />
       <Switch>
-        <Route path="/dashboard">
+        {/* <Route path="/dashboard">
           <Index />
-        </Route>
+        </Route> */}
+        <ProtectedRoute path="/dashboard" component={Index} />
         <Route path="/login">
           <Login />
         </Route>

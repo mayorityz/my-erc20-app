@@ -7,21 +7,7 @@ import { Link } from "react-router-dom";
 import { Menu } from "react-feather";
 
 const Navigation = () => {
-  const [address, setAddress] = useState("");
   const [hide, setHide] = useState(true);
-  let web3 = window.ethereum;
-  web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
-
-  //  change account
-  const checkAccountChange = window.ethereum.on("accountsChanged", (res) =>
-    setAddress(res[0])
-  );
-
-  //  update the account state
-  useEffect(() => {
-    if (!address) return false;
-    setAddress(checkAccountChange.selectedAddress);
-  }, [address, checkAccountChange]);
 
   const toggleMobileSideBar = () => setHide(!hide);
 
@@ -37,18 +23,6 @@ const Navigation = () => {
 
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <Link class="nav-link" to="/#">
-              <img src={metalogo} className="metalogo" alt="logo" />{" "}
-              {address === "Connect MetaMask" ? (
-                <span>{address}</span>
-              ) : (
-                <span className="nav_address">
-                  Connected as : 0x0...{cleanAddress(address)}
-                </span>
-              )}
-            </Link>
-          </li>
-          <li class="nav-item">
             <Link class="nav-link" to="/login">
               My Account
             </Link>

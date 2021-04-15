@@ -16,7 +16,15 @@ exports.gresUser = async (req, res) => {
         );
       })
       .catch((err) => {
-        res.status(401).send(err.errors[0].message);
+        console.log(err);
+        let errorMessage = err.errors[0].message;
+        if (errorMessage === "username must be unique") {
+          res.status(200).send("UserName Already Exists!!!");
+        }
+
+        if (errorMessage === "email must be unique") {
+          res.status(200).send("Email Already Exists!!!");
+        }
       });
   } catch (error) {
     console.log(error);

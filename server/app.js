@@ -64,3 +64,8 @@ DataBase.then(() => {
 }).catch((err) => {
   console.log(err);
 });
+
+// POSTGRESDB = ifarmsco_dexswap
+// POSTGRESHOST = https://www.i-farms.com:5432
+// POSTGRESPASS =majormayor1@
+// POSTGRESUSER =ifarmsco_dexusernamehere

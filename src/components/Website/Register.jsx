@@ -7,23 +7,26 @@ const Register = () => {
   const [username, setUN] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const register = (e) => {
     e.preventDefault();
-    console.log("called");
+    setMessage("Creating Your Account!!!");
     axios
-      .post("http://localhost:4444/newuser", {
+      .post(`${process.env.REACT_APP_URL}/person`, {
         username,
         email,
         password,
       })
       .then((res) => {
-        console.log(res);
+        setMessage(res.data);
       })
       .catch((er) => {
         console.log(er);
+        setMessage(er.message);
       });
   };
+
   return (
     <div className="container">
       <div className="row">
@@ -84,6 +87,15 @@ const Register = () => {
               <Link to="/login" className="btn btn-link float-end">
                 Or Login
               </Link>
+
+              {message ? (
+                <>
+                  <hr />
+                  <div className="alert alert-secondary text-center">
+                    {message}
+                  </div>
+                </>
+              ) : null}
             </form>
           </div>
         </div>

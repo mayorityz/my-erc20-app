@@ -20,8 +20,12 @@
     "socket.io": "^4.0.1",
     "uniqid": "^5.3.0"
   },
+  "engines": {
+    "node": "14.15.1",
+    "yarn": "1.22.10"
+  },
   "scripts": {
-    "start": "node app",
+    "start": "node ./Services/POST_GRES_DB",
     "dev": "nodemon ./Services/POST_GRES_DB"
   },
   "devDependencies": {
