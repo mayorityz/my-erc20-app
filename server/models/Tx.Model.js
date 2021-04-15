@@ -2,12 +2,14 @@ const DB = require("mongoose");
 
 const txSchema = new DB.Schema({
   sellerid: String,
-  sellerAddress: String,
-  txHash: String,
-  valueInWei: Number,
-  date: { type: Date, default: Date.now() },
-  blockHash: String,
-  status: { type: Boolean, default: true },
+  balance: { type: Number, default: 0 },
+  history: Array,
+  upSale: { type: Number, default: 0 },
+  saleHistory: Array,
+  minPurchase: { type: Number, default: 0 },
+  fiat: Number,
+  description: String,
+  pairs: Array,
 });
 
 const TxAction = DB.model("Transaction", txSchema);

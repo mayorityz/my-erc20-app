@@ -9,10 +9,21 @@ const txController = require("../controllers/Tx.Controller");
 
 router.post(
   "/transactions/save-tx",
-  userMiddleware.Validation,
+  // userMiddleware.Validation,
+  userMiddleware.VerifyCookie,
+  userMiddleware.VerifyToken,
   txController.SaveTx
 );
 
+router.post(
+  "/transactions/put-up-for-sale",
+  // userMiddleware.Validation,
+  userMiddleware.VerifyCookie,
+  userMiddleware.VerifyToken,
+  txController.sell
+);
+
+// -> redundant route.
 router.post(
   "/transactions/save-new-tx",
   userMiddleware.VerifyCookie,

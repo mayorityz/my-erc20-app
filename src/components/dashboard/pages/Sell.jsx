@@ -42,7 +42,7 @@ const Sell = () => {
       .then(async (tx) => {
         console.log(tx);
         const saveRecord = await axios.post(
-          `${process.env.REACT_APP_URL}/sales/newsalesdeposit`,
+          `${process.env.REACT_APP_URL}/transactions/put-up-for-sale`,
           {
             forSale: ether,
             minPurchase: web3.utils.toWei(minPurchase),

@@ -46,13 +46,14 @@ const Deposit = () => {
         // sent the tx to backend for sorting
         axios
           .post(
-            `${process.env.REACT_APP_URL}/transactions/save-new-tx`,
+            `${process.env.REACT_APP_URL}/transactions/save-tx`,
             { ...tx, value: ether },
             { withCredentials: true }
           )
           .then((res) => {
-            console.log(res.data);
-            setAlert("Deposit Made Successfully!");
+            if (res.data.status === "Failed")
+              setAlert("Network Error! Contact Admin!!!");
+            else setAlert("Deposit Made Successfully!");
           })
           .catch((er) => {
             console.log(er);
