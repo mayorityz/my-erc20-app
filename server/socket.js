@@ -8,6 +8,7 @@ const socket = (io) => {
   io.on("connection", (client) => {
     const ROOMID = client.handshake.query.roomid;
     client.join(ROOMID);
+    console.log(ROOMID);
     console.log("New Connection");
 
     client.on("disconnect", (reason) => {

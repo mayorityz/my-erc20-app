@@ -35,16 +35,32 @@ const Navigation = () => {
         </ul>
       </nav>
       <div className="mobileSideBar">
-        <h3>Close</h3>
+        <span className="closeNav">X</span>
         <ul>
-          <li>a</li>
-          <li>b</li>
-          <li>c</li>
-          <li>d</li>
-          <li>e</li>
-          <li>f</li>
-          <li>g</li>
-          <li>h</li>
+          <li>
+            <a href="#">HOME</a>
+          </li>
+          <li>
+            <a href="#">MY ACCOUNT</a>
+          </li>
+          <li>
+            <a href="#">DASHBOARD</a>
+          </li>
+          <li>
+            <a href="#">DEPOSIT</a>
+          </li>
+          <li>
+            <a href="#">SELL</a>
+          </li>
+          <li>
+            <a href="#">BUY</a>
+          </li>
+          <li>
+            <a href="#">LEDGER</a>
+          </li>
+          <li>
+            <a href="#">HISTORY</a>
+          </li>
         </ul>
       </div>
     </>

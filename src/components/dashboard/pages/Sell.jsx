@@ -84,102 +84,102 @@ const Sell = () => {
   return (
     <>
       <div className="container container_x">
-        <Network />
         <div className="row">
           <div className="col-md-6">
+            <Network />
             <img src={image} alt="side desc" style={{ width: "100%" }} />
           </div>
-          <div className="col-md-6  bg-white p-4">
-            <div className="alert alert-success text-center">
-              Connected Address : {address}
+          <div className="col-md-6">
+            <div className="  bg-white p-4">
+              <div className="alert alert-success text-center">
+                Connected Address : {address}
+              </div>
+              <div className="alert alert-dark text-center">
+                You Currently Have {web3.utils.fromWei(details.forSale)} eth For
+                Sale
+              </div>{" "}
+              <hr />
+              <h6>
+                <Archive size={13} /> Sell From Deposit Ether.{" "}
+                <span className="float-end">
+                  {address ? (
+                    "MetaMask Connected"
+                  ) : (
+                    <button
+                      className="btn btn-link"
+                      onClick={() => window.ethereum.enable()}
+                    >
+                      Connect Wallet
+                    </button>
+                  )}
+                </span>
+              </h6>
+              <form action="" onSubmit={putUpForSale}>
+                <div className="form-group row">
+                  <div className="col-md-6">
+                    <label htmlFor="sell_field">Ether For Sale.</label>
+                    <input
+                      type="number"
+                      id="sell_field"
+                      placeholder="Enter Amount For Sale..."
+                      className="form-control"
+                      required
+                      onChange={({ target }) => setSale(target.value)}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="sell_field">Amount In Wei.</label>
+                    <input
+                      type="text"
+                      id="sell_field"
+                      placeholder={!forSale ? "0" : Web3.utils.toWei(forSale)}
+                      className="form-control"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <hr />
+                <div className="form-group row">
+                  <div className="col-md-6">
+                    <label htmlFor="">Min. Purchase Of Eth At Once</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Min. Purchase At Once"
+                      value={minPurchase}
+                      onChange={({ target }) => setMinPurchase(target.value)}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="">Amount In Naira/Eth </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="e.g. 3400000"
+                      value={fiatValue}
+                      onChange={({ target }) => setFiat(target.value)}
+                    />
+                  </div>
+                </div>
+                <hr />
+                <div className="form-group">
+                  <label htmlFor="desc">Descripe Your Terms Of Sale:</label>
+                  <textarea
+                    name=""
+                    id="desc"
+                    rows="5"
+                    className="form-control"
+                    placeholder="Type Message Here ..."
+                    value={info}
+                    onChange={({ target }) => setInfo(target.value)}
+                  ></textarea>
+                </div>
+                <hr />
+                <button className="btn custom-btn success">
+                  SELL {forSale} ETHER
+                </button>
+              </form>
             </div>
-            <div className="alert alert-secondary text-center">
-              You Currently Have {web3.utils.fromWei(details.forSale)} eth For
-              Sale
-            </div>{" "}
-            <hr />
-            <h6>
-              <Archive size={13} /> Sell From Deposit Ether.{" "}
-              <span className="float-end">
-                {address ? (
-                  "MetaMask Connected"
-                ) : (
-                  <button
-                    className="btn btn-link"
-                    onClick={() => window.ethereum.enable()}
-                  >
-                    Connect Wallet
-                  </button>
-                )}
-              </span>
-            </h6>
-            <form action="" onSubmit={putUpForSale}>
-              <div className="form-group row">
-                <div className="col-md-6">
-                  <label htmlFor="sell_field">
-                    Put Up Some Ether For Sale.
-                  </label>
-                  <input
-                    type="number"
-                    id="sell_field"
-                    placeholder="Enter Amount For Sale..."
-                    className="form-control"
-                    required
-                    onChange={({ target }) => setSale(target.value)}
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="sell_field">Amount In Wei.</label>
-                  <input
-                    type="text"
-                    id="sell_field"
-                    placeholder={!forSale ? "0" : Web3.utils.toWei(forSale)}
-                    className="form-control"
-                    disabled
-                  />
-                </div>
-              </div>
-              <hr />
-              <div className="form-group row">
-                <div className="col-md-6">
-                  <label htmlFor="">Min. Purchase Of Eth At Once</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="Min. Purchase At Once"
-                    value={minPurchase}
-                    onChange={({ target }) => setMinPurchase(target.value)}
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="">Amount In Naira/Eth </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    placeholder="e.g. 3400000"
-                    value={fiatValue}
-                    onChange={({ target }) => setFiat(target.value)}
-                  />
-                </div>
-              </div>
-              <hr />
-              <div className="form-group">
-                <label htmlFor="desc">Descripe Your Terms Of Sale:</label>
-                <textarea
-                  name=""
-                  id="desc"
-                  rows="5"
-                  className="form-control"
-                  placeholder="Type Message Here ..."
-                  value={info}
-                  onChange={({ target }) => setInfo(target.value)}
-                ></textarea>
-              </div>
-              <hr />
-              <button className="btn btn-success btn-xs">
-                Sell {forSale} Ether
-              </button>
-            </form>
           </div>
         </div>
       </div>

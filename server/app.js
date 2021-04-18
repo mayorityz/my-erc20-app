@@ -58,7 +58,7 @@ app.use((err, req, res, next) => {
 });
 
 // server
-DataBase.then(() => {
+const server = DataBase.then(() => {
   console.log("db is connected");
   app.listen(Port, () => {
     console.log(`running on port:${Port}`);
@@ -71,3 +71,12 @@ DataBase.then(() => {
 // POSTGRESHOST = https://www.i-farms.com:5432
 // POSTGRESPASS =majormayor1@
 // POSTGRESUSER =ifarmsco_dexusernamehere
+
+// socket
+var io = require("socket.io")(server, {
+  cors: {
+    origin: `http://localhost:3000`,
+  },
+});
+
+require("./socket")(io);

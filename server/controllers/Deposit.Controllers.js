@@ -87,41 +87,43 @@ exports.saleInfo = async (req, res) => {
 
 exports.placeorder = async (req, res) => {
   const { id } = req.who;
-  const { salesid, value, fiat } = req.body;
-
+  const { salesid, value, valueInEth } = req.body;
+  // ! use d web3 lib to calc the valueInEth.
   try {
     //! 1. query for the record by salesid
     //! 2. reduce the sales id
     //! 3. save and add pair to seller record
-    const { minPurchase, sellerid, upSale, pairs } = await txModal.findOne({
-      _id: salesid,
-    });
+    const { minPurchase, sellerid, upSale, fiat: rate } = await txModal.findOne(
+      {
+        _id: salesid,
+      }
+    );
 
-    if (value < minPurchase) {
+    if (valueInEth < minPurchase) {
       res.status(200).send("Value Less Than Min. Purchase");
       return;
     }
 
-    if (upSale < value) {
+    if (upSale < valueInEth) {
       res.status(200).send("Oooops! Someone's Beaten You To The Deal!");
       return;
     }
 
     //! check that pair doesn't exist...
-
-    let pairBalance = value * parseInt(fiat);
-
+    console.log(valueInEth);
     const query = await txModal.updateOne(
       { _id: salesid },
       {
-        $inc: { upSale: -value },
+        $inc: { upSale: -valueInEth },
         $push: {
           pairs: {
+            pairId: 335,
             seller: sellerid,
             buyer: id,
-            amount: pairBalance,
-            rate: fiat,
-            pairdate: Date.now,
+            eth: valueInEth,
+            fiat: value * rate,
+            saleRate: rate,
+            pairDate: Date.now(),
             status: "connected",
           },
         },
@@ -144,13 +146,34 @@ exports.placeorder = async (req, res) => {
 
 exports.myOrderConnections = async (req, res) => {
   const { id } = req.who;
+  // try {
+  //   const fetchData = await sequelize.query(
+  //     `SELECT rateatpurchase, ethvalue, fiat, orderdate, orderid, status FROM orders WHERE sellerid = ${id}`
+  //   );
+  //   res.status(200).json({ status: "success", data: fetchData[0] });
+  // } catch (error) {
+  //   res.status(400).json({ status: "failure", data: "" });
+  // }
+  // ! get the open orders i have as a user!!!
   try {
-    const fetchData = await sequelize.query(
-      `SELECT rateatpurchase, ethvalue, fiat, orderdate, orderid, status FROM orders WHERE sellerid = ${id}`
-    );
-    res.status(200).json({ status: "success", data: fetchData[0] });
+    const query = await txModal.findOne({
+      sellerid: id,
+    });
+    // filter for connected!
+    if (!query) {
+      res
+        .status(200)
+        .send({ status: "success", message: "What Are you Trying To Do!?" });
+      return;
+    }
+
+    let filter = query.pairs.filter((pairs) => {
+      return pairs.status === "connected";
+    });
+
+    res.status(200).json({ status: "success", message: "", data: filter });
   } catch (error) {
-    res.status(400).json({ status: "failure", data: "" });
+    console.log(error);
   }
 };
 
@@ -184,12 +207,44 @@ exports.sellerNegoView = async (req, res) => {
   const { id } = req.who;
   const { tradeid } = req.params;
 
+  // try {
+  //   const fetchData = await sequelize.query(
+  //     `SELECT * FROM orders WHERE sellerid = ${id} AND orderid ='${tradeid}' AND status= 'ongoing'`
+  //   );
+  //   res.status(200).json({ status: "success", data: fetchData[0] });
+  // } catch (error) {
+  //   res.status(400).json({ status: "failure", data: [] });
+  // }
+
   try {
-    const fetchData = await sequelize.query(
-      `SELECT * FROM orders WHERE sellerid = ${id} AND orderid ='${tradeid}' AND status= 'ongoing'`
-    );
-    res.status(200).json({ status: "success", data: fetchData[0] });
+    const query = await txModal.findOne({
+      "pairs.pairId": parseInt(tradeid),
+      "pairs.buyer": id,
+      "pairs.status": "connected",
+    });
+    let filter;
+
+    if (query) {
+      filter = query.pairs.filter((pair) => {
+        return pair.pairId === parseInt(tradeid);
+      });
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          eth: filter[0].eth,
+          date: filter[0].pairDate,
+          fiat: filter[0].fiat,
+          rate: filter[0].saleRate,
+          message: query.description,
+        },
+      });
+      return;
+    } else {
+      res.status(200).json({ status: "failed", message: "Are You Lost???" });
+      return;
+    }
   } catch (error) {
-    res.status(400).json({ status: "failure", data: [] });
+    console.log(error);
   }
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import Web3 from "web3";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const SalesDetails = () => {
   const { id } = useParams();
@@ -11,6 +12,8 @@ const SalesDetails = () => {
 
   //   manage error.
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("Please Wait!!!");
 
   useEffect(() => {
     const getDetails = async () => {
@@ -34,103 +37,101 @@ const SalesDetails = () => {
     )
       setColoring(false);
     else setColoring(true);
-
     setFiat(value * data.data.fiat);
   };
 
   const submitForm = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const order = await axios.post(
       `${process.env.REACT_APP_URL}/sales/placeorder`,
       {
-        value: Web3.utils.toWei(value),
+        value,
+        valueInEth: Web3.utils.toWei(value),
         salesid: id,
         fiat,
         rates: data.data.fiat,
       },
       { withCredentials: true }
     );
-    console.log(order);
+    setMessage(order.message);
+    setLoading(false);
   };
 
   return (
     <>
       {data.status === "success" && (
-        <div className="row  justify-content-md-center">
-          <div className="col-md-4">
-            <div className="form-group row">
-              <div className="col-md-4">
-                <label>Seller : </label>
+        <div className="container">
+          <div className="row  justify-content-md-center">
+            <div className="col-md-4 bg-white p-3 mt-5 border border-secondary shadow">
+              <h3 style={{ fontFamily: "Rokkitt" }}>
+                - Seller - <Link to="#">mayorityz</Link>.
+              </h3>
+              <hr />
+              <div className="text-center">
+                <span style={style.span}>
+                  {Web3.utils.fromWei(data.data.upSale.toString())}eth
+                </span>{" "}
+                @ <span style={style.span}>N{data.data.fiat}/ETH </span>
               </div>
-              {/* <div className="col-md-8">{data.data[0].username}</div> */}
-            </div>
-            <div className="form-group row">
-              <div className="col-md-4">
-                <label>For Sale : </label>
-              </div>
-              <div className="col-md-8">
-                {Web3.utils.fromWei(data.data.upSale.toString())}eth.
-              </div>
-            </div>
-            <div className="form-group row">
-              <div className="col-md-4">
-                <label>Min Purchase : </label>
-              </div>
-              <div className="col-md-8">
-                {Web3.utils.fromWei(data.data.minPurchase.toString())}eth.
-              </div>
-            </div>
-            <div className="form-group row">
-              <div className="col-md-4">
-                <label>Rate : </label>
-              </div>
-              <div className="col-md-8">N{data.data.fiat}</div>
-            </div>
-            <div className="form-group row">
-              <div className="col-md-4">
-                <label>User Address: </label>
-              </div>
-              {/* <div className="col-md-8">{data.data[0].address}</div> */}
-            </div>
-            <div className="form-group row">
-              <div className="col-md-4">
-                <label>Upload Date : </label>
-              </div>
-              {/* <div className="col-md-8">{data.data[0].updated}</div> */}
-            </div>
-            <hr />
-            <form action="" onSubmit={submitForm}>
-              <div className="form-group">
-                <label htmlFor="">i want to buy ...</label>
-                <input
-                  type="text"
-                  className={`form-control ${
-                    coloring ? "is-valid" : "is-invalid"
-                  }`}
-                  value={value}
-                  placeholder=""
-                  onChange={calcFiat}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="">I want to buy ...</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  value={fiat}
-                />
+              <div className="text-center">
+                <span style={style.span}> Minimum Purchase</span> ={" "}
+                <span style={style.span}>
+                  {" "}
+                  {Web3.utils.fromWei(data.data.minPurchase.toString())}eth.
+                </span>
               </div>
               <hr />
-              <button className="btn btn-success" disabled={!coloring}>
-                Place Order!
-              </button>
-            </form>
+              <form action="" onSubmit={submitForm}>
+                <div className="form-group">
+                  <label htmlFor="">I Want To Buy : </label>
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      coloring ? "is-valid" : "is-invalid"
+                    }`}
+                    value={value}
+                    placeholder=""
+                    onChange={calcFiat}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="">Value In N :</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={fiat}
+                  />
+                </div>
+                <hr />
+
+                {!loading ? (
+                  <button
+                    className="btn custom-btn success"
+                    disabled={!coloring}
+                  >
+                    PLACE ORDER
+                  </button>
+                ) : (
+                  <div className="alert alert-secondary">{message}</div>
+                )}
+              </form>
+            </div>
           </div>
         </div>
       )}
     </>
   );
+};
+
+const style = {
+  span: {
+    color: "blue",
+    fontSize: 25,
+    fontWeight: "bold",
+    fontFamily: "'Rokkitt', serif",
+  },
 };
 
 export default SalesDetails;

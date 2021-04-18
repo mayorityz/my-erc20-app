@@ -34,7 +34,7 @@ const SideBar = () => {
         </li>
         <li>
           <Link to={`${url}/purchase`}>
-            <Activity size={16} /> My Order History <Bell size={8} />
+            <Activity size={16} /> Ledger <Bell size={8} />
           </Link>
         </li>
         <li>

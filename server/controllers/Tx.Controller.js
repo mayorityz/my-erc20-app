@@ -34,7 +34,6 @@ exports.SaveTx = async (req, res) => {
 
 exports.sell = async (req, res) => {
   const { forSale, minPurchase, fiatValue, info, transid, address } = req.body;
-
   const updateRecord = await txModel.updateOne(
     { sellerid: req.who.id },
     {
@@ -51,6 +50,9 @@ exports.sell = async (req, res) => {
         },
       },
     }
+    // {
+    //   upsert: true,
+    // }
   );
 
   if (!updateRecord) res.status(202).json({ status: "Failed", data: null });

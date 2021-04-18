@@ -32,9 +32,8 @@ const Offers = () => {
   return (
     <div className="container table-responsive container_x">
       <Network />
-      <div className="row">
-        {/* justify-content-md-center */}
-        <div className="col-md-4"></div>
+      <div className="row  justify-content-md-center">
+        {/* */}
         <div className="col-md-8">
           <h5 className="text-center">
             {" "}
@@ -50,8 +49,6 @@ const Offers = () => {
             <table className="table table-hover table-striped table-sm  text-center">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col">Username</th>
-                  <th scope="col">Address</th>
                   <th scope="col">Amount</th>
                   <th scope="col">Min. Purchase</th>
                   <th scope="col">Rate</th>
@@ -62,8 +59,6 @@ const Offers = () => {
               <tbody>
                 {sales.data.map((sale) => (
                   <tr key={sale._id}>
-                    <td>{sale.username}</td>
-                    <td></td>
                     <td>{Web3.utils.fromWei(sale.upSale.toString())}eth</td>
                     <td>
                       {Web3.utils.fromWei(sale.minPurchase.toString())}

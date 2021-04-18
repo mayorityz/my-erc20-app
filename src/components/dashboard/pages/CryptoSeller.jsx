@@ -11,12 +11,12 @@ const CryptoSeller = () => {
   const [msg, setMsg] = useState({ name: "", txStatus: "seller", message: "" });
   const [conversation, setConversation] = useState([]);
   const [socket, setSocket] = useState(null);
-  const [data, setData] = useState({ ethvalue: "0" });
+  const [data, setData] = useState({ eth: "0" });
   const SERVER = `${process.env.REACT_APP_URL}/?roomid=${id}`; //connection to the socket on the server.
 
   // window.scrollTo(0, document.body.scrollHeight);
   useEffect(() => {
-    setSocket(io(SERVER));
+    // setSocket(io(SERVER));
     // socket.on("connect", (socket) => {
     //   console.log("connected! : ", socket);
     // });
@@ -25,10 +25,11 @@ const CryptoSeller = () => {
   useEffect(() => {
     const url = async () => {
       let query = await axios.get(
-        `http://localhost:4444/sales/buyer-negotiation/${id}`,
+        `${process.env.REACT_APP_URL}/sales/buyer-negotiation/${id}`,
         { withCredentials: true }
       );
-      if (query.data.status === "success") setData(query.data.data[0]);
+
+      if (query.data.status === "success") setData(query.data.data);
     };
     url();
   }, [id]);
@@ -45,7 +46,7 @@ const CryptoSeller = () => {
   const converse = (e) => {
     e.preventDefault();
     setMsg({ name: "", txStatus: "seller", message: "" });
-    socket.emit(id, msg);
+    // socket.emit(id, msg);
   };
 
   const sellersMessage = ({ target: { value } }) => {
@@ -59,30 +60,19 @@ const CryptoSeller = () => {
     <div className="container container_x">
       <div className="row">
         <div className="col-md-6">
-          <div className="alert alert-secondary">
-            <p>Chat Room Rules : </p>
-            <ol>
-              <li>Civility is key.</li>
-              <li>Quick and no time wasting</li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-            </ol>
-          </div>
-          <div className="row">
+          <div className="row alert alert-secondary">
             <div className="col-md-6">
               <label htmlFor="">Locked Ether Value</label>
-              <h4>{web3.utils.fromWei(data.ethvalue)} eth</h4>
+              <h4>{web3.utils.fromWei(data.eth.toString())} eth</h4>
             </div>
             <div className="col-md-6">
               <label htmlFor="">Rate</label>
-              <h4>N{data.rateatpurchase}/eth</h4>
+              <h4>N{data.rate}/eth</h4>
             </div>
 
             <div className="col-md-6">
               <label htmlFor="">Status</label>
-              <h4>{data.status}</h4>
+              <h4>Connected</h4>
             </div>
             <div className="col-md-6">
               <label htmlFor="">Expected Sell Value :</label>
@@ -99,24 +89,33 @@ const CryptoSeller = () => {
             </div>
           </div>
           <hr />
-          <button className="btn btn-sm btn-warning pull-right">
-            Release Value To Buyer
-          </button>{" "}
-          <button className="btn btn-sm btn-warning pull-right">
-            Raise A Dispute Claim!
-          </button>
-          <br />
           <div className="alert alert-secondary">
             <p>Seller's Message : </p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam
-            eius sed assumenda molestiae fuga quasi accusantium alias
-            voluptatem, repellendus illo cupiditate iste molestias distinctio
-            commodi ut? Magni in beatae sapiente.
+            {data.message}
           </div>
           <hr />
+          <div className="row mb-5">
+            <div className="col-md-6">
+              <button className="custom-btn success">RELEASE ETH</button>
+            </div>
+            <div className="col-md-6">
+              <button className="custom-btn danger">DISPUTE</button>
+            </div>
+          </div>
         </div>
         <div className="col-md-6">
-          <label htmlFor="">
+          <label
+            htmlFor=""
+            style={{
+              backgroundColor: "#212529",
+              display: "block",
+              color: "#fff",
+              paddingTop: 10,
+              paddingBottom: 10,
+              paddingLeft: 9,
+              marginBottom: 2,
+            }}
+          >
             <MessageSquare size={15} /> Chat
           </label>
           <div className="chat_area">
